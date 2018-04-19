@@ -266,7 +266,9 @@ func (s *Span) End() {
 		return
 	}
 	s.endOnce.Do(func() {
-		s.executionTracerSpanEnd()
+		if s.executionTracerSpanEnd != nil {
+			s.executionTracerSpanEnd()
+		}
 		// TODO: optimize to avoid this call if sd won't be used.
 		sd := s.makeSpanData()
 		sd.EndTime = internal.MonotonicEndTime(sd.StartTime)
